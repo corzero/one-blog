@@ -61,3 +61,4 @@ typings/
 .next
 #configuration
 server/config.js
+server/script
