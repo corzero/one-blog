@@ -41,7 +41,7 @@ class ArticleController {
    */
   static async create (ctx) {
     const article = ctx.request.body
-    article.author = ctx.user.id
+    article.author = ctx.user._id
     const validate = joi.validate(article, articleSchema.create)
     if (validate.error) {
       return (ctx.body = statusCode.Error_400(validate.error.message))
@@ -62,7 +62,7 @@ class ArticleController {
    */
   static async update (ctx) {
     const article = ctx.request.body
-    article.author = ctx.user.id
+    article.author = ctx.user._id
     const validate = joi.validate(article, articleSchema.update)
     if (validate.error) {
       return (ctx.body = statusCode.Error_400(validate.error.message))

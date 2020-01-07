@@ -16,7 +16,7 @@ import VueSocketIO from 'vue-socket.io'
 
 Vue.use(
   new VueSocketIO({
-    debug: true,
+    debug: process.env.NODE_ENV === 'development',
     connection: 'http://127.0.0.1:3000'
   })
 )

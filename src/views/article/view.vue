@@ -48,7 +48,7 @@ export default {
       default: 'add'
     }
   },
-  data() {
+  data () {
     return {
       // 辅助
       isAdd: false,
@@ -67,17 +67,17 @@ export default {
     }
   },
   computed: {
-    selectTag() {
+    selectTag () {
       return this.tagList.filter(e => this.article.tagList.includes(e._id))
     }
   },
-  async created() {
+  async created () {
     this.checkType()
     await this.getCategoryList()
     this.$route.params.aid && await this.getOne(this.$route.params.aid)
   },
   methods: {
-    checkType() {
+    checkType () {
       const type = this.type
       if (type === 'add') {
         this.isAdd = true
@@ -87,38 +87,44 @@ export default {
         this.isView = true
       }
     },
-    async getOne(_id) {
+    async getOne (_id) {
       const res = await article.getOne(_id)
       // await this.$http.get(`${this.$api.article}/${_id}`)
       res.data.category && await this.getTagList(res.data.category)
       this.article = Object.assign({}, res.data)
     },
-    async getCategoryList() {
+    async getCategoryList () {
       const res = await category.getList()
       this.categoryList = res ? res.data : []
     },
-    async getTagList(cid) {
+    async getTagList (cid) {
       if (cid) {
         const res = await tag.getList(cid)
         this.tagList = res ? res.data : []
       }
     },
-    async saveArticle() {
+    async saveArticle () {
       if (this.type === 'add') {
         const res = await article.create(this.article)
-        console.log(res)
+        if (res.code === 200) {
+          this.$message.success('添加成功')
+          this.$router.back(-1)
+        }
       } else if (this.type === 'edit') {
         const res = await article.update(this.article)
-        console.log(res)
+        if (res.code === 200) {
+          this.$message.success('更新成功')
+          this.$router.back(-1)
+        }
       }
     },
-    cancelArticle() {
+    cancelArticle () {
       this.$emit('changeView', { type: null })
     },
-    handleClose(tid) {
+    handleClose (tid) {
       this.article.tagList.splice(this.article.tagList.indexOf(tid), 1)
     },
-    $imgAdd(pos, $file) {
+    $imgAdd (pos, $file) {
       console.log(this.$api)
       // 第一步.将图片上传到服务器.
       var formdata = new FormData()
@@ -131,7 +137,7 @@ export default {
           this.$refs.md.$img2Url(pos, url)
         })
     },
-    $imgDel(pos) {
+    $imgDel (pos) {
       delete this.img_file[pos]
     }
   }

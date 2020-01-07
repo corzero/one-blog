@@ -66,7 +66,7 @@ class ArticleService {
   static async getOne (aid) {
     const res = await ArticleModel.findOne(
       { _id: aid },
-      { __v: 0, meta: 0, author: 0 }
+      { __v: 0, meta: 0, author: 0, visited: 0 }
     ).catch(e => logger.error(e))
     return res || null
   }

@@ -15,8 +15,6 @@ const isExternal = path => {
  * @returns {Boolean}
  */
 const validUsername = str => {
-  // const vmap = ['admin', 'editor', 'cortejo']
-  // return vmap.indexOf(str.trim()) >= 0
   var reg = /^[a-zA-Z\d]\w{3,11}[a-zA-Z\d]$/
   return reg.test(str.trim())
 }
