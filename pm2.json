@@ -13,6 +13,6 @@
     "min_uptime": "60s",
     "max_restarts": 30,
     "autorestart": true,
-    "restart_delay": "60s"
+    "restart_delay": 60
   }
 }
