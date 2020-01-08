@@ -33,8 +33,8 @@ class ArticleService {
    * @returns {Promise<boolean>}
    */
   static async queryList (query) {
-    const { title, category, tag, pageNum, pageSize } = query
-    const conditions = {}
+    const { title, category, tag, pageNum, pageSize, status } = query
+    const conditions = { isDeleted: !!status }
     if (title) {
       conditions.title = { $regex: title, $options: 'i' }
     }

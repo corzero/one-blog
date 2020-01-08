@@ -26,6 +26,7 @@ const update = create.append({
 })
 
 const queryList = Joi.object().keys({
+  status: Joi.number().default(0),
   title: Joi.string().allow(''),
   category: Joi.string().allow(''),
   tag: Joi.string().allow(''),

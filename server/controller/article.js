@@ -81,7 +81,7 @@ class ArticleController {
    * @param ctx id
    * @returns {Promise<boolean>}
    */
-  static async delete (ctx) {
+  static async deleteByIds (ctx) {
     const { ids } = ctx.request.body
     const res = await articleService.delete(ids)
     if (!res) {
@@ -112,6 +112,6 @@ module.exports = router => {
   router.get('/article/:aid', ArticleController.getOneById)
   router.post('/article', ArticleController.create)
   router.put('/article', ArticleController.update)
-  router.delete('article', ArticleController.delete)
+  router.delete('/article', ArticleController.deleteByIds)
   router.post('/recover', ArticleController.recover)
 }

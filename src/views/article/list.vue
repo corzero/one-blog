@@ -56,7 +56,7 @@
             <el-button type="primary" size="mini" icon="el-icon-edit" circle @click="$router.push(`/article/edit/${scope.row._id}`)" />
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="删除" placement="top">
-            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="handleDelete(scope.row._id, scope.row)" />
+            <el-button type="danger" size="mini" icon="el-icon-delete" circle @click="handleDelete(scope.row._id)" />
           </el-tooltip>
           <el-tooltip class="item" effect="dark" content="收藏" placement="top">
             <el-button type="warning" size="mini" icon="el-icon-star-off" circle @click="handleCollect(scope.row._id, scope.row)" />
@@ -96,7 +96,7 @@ export default {
   methods: {
     async filterSearch (pageNum = 1) {
       this.loading = true
-      const query = `?title=${this.query.title}&category=${this.query.category}&tag=${this.query.tag}&pageNum=${pageNum}&pageSize=${this.query.pageSize}`
+      const query = `?title=${this.query.title}&category=${this.query.category}&tag=${this.query.tag}&pageNum=${pageNum}&pageSize=${this.query.pageSize}&status=0`
       const res = await article.getList(query)
       if (res.code === 200) {
         this.articleList = res.data.list
@@ -115,6 +115,13 @@ export default {
         if (res.code === 200) {
           this.tagList = res.data
         }
+      }
+    },
+    async handleDelete (id) {
+      const res = await article.delete([id])
+      if (res.code === 200) {
+        this.$message.success('删除成功')
+        this.filterSearch()
       }
     }
   }
