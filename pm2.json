@@ -1,7 +1,7 @@
 {
   "apps": {
     "name": "zero",
-    "script": "./server/app",
+    "script": "./server/app.js",
     "cwd": "./",
     "watch": true,
     "ignore_watch": ["node_modules", "./logs"],
