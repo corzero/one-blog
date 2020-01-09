@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { Message } from 'element-ui'
+import { Message, MessageBox } from 'element-ui'
 import NProgress from 'nprogress' // 进度加载条
 import 'nprogress/nprogress.css' // 进度加载条样式
 import store from '@/store'
@@ -57,25 +57,33 @@ axios.interceptors.response.use(
       store.dispatch('user/addToken', newToken)
     }
     if (response.data.code !== 200) {
-      console.log('code', response.data.code, router.currentRoute.fullPath)
       if (response.data.code === 401) {
-        store.dispatch('user/resetToken')
-        console.log(router)
-        router.push(`/login?redirect=${router.fullPath}`)
-        Message({
-          message: '身份失效，请重新登录！',
-          type: 'error',
-          duration: 5 * 1000
-        })
-        return
+        // to re-login
+        // MessageBox.confirm('身份验证失效，请重新登录或退出系统。', 'Tips~', {
+        //   confirmButtonText: '重新登录',
+        //   cancelButtonText: '退出',
+        //   type: 'warning'
+        // })
+        //   .then(() => {
+        //     location.reload()
+        //   })
+        //   .catch(action => {
+        //     window.opener = null
+        //     window.open('', '_self')
+        //     window.close()
+        //   })
+        const redirect = router.currentRoute.fullPath
+        store
+          .dispatch('user/resetToken')
+          .then(() => router.push(`/login?redirect=${redirect}`))
       } else {
         Message({
           message: response.data.msg,
           type: 'error',
           duration: 5 * 1000
         })
-        return Promise.reject(new Error(response.data.msg || 'Error'))
       }
+      return { code: 401, msg: '身份失效' }
     } else {
       return response.data
     }

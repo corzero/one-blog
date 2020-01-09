@@ -10,6 +10,7 @@ const create = Joi.object().keys({
   tagList: Joi.array()
     .required()
     .error(new Error('标签不能为空')),
+  desc: Joi.string(),
   content: Joi.string()
     .required()
     .error(new Error('内容不能为空')),
