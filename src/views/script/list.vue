@@ -16,14 +16,14 @@
       </el-form-item>
     </el-form>
     <transition name="el-zoom-in-top">
-      <el-form v-show="createNew" ref="setNew" label-width="80px" :model="newScript" size="mini">
-        <el-form-item label="脚本名称">
+      <el-form v-show="createNew" ref="createNew" label-width="80px" :model="newScript" size="mini">
+        <el-form-item label="脚本名称" prop="name">
           <el-input v-model.trim="newScript.name" placeholder="脚本名称必须和文件名相同" />
         </el-form-item>
-        <el-form-item label="描述说明">
+        <el-form-item label="描述说明" prop="remark">
           <el-input v-model.trim="newScript.remark" placeholder="脚本类型与作用" />
         </el-form-item>
-        <el-form-item label="参数">
+        <el-form-item label="参数" prop="argument">
           <el-input v-model="newScript.argument" placeholder="请使用#划分参数，执行脚本时将传入参数数组" />
         </el-form-item>
         <el-form-item>
@@ -125,11 +125,11 @@ export default {
   created () {
     this.getScriptList()
   },
-
   methods: {
     handlerReset () {
+      console.log(this.$refs)
       this.createNew = false
-      this.$refs.setNew.resetFields()
+      this.$refs['createNew'].resetFields()
     },
     async handlerCreate () {
       const res = await script.create(this.newScript)

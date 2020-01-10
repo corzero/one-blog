@@ -19,8 +19,9 @@ const article = {
   getOne: id => axios.get(`/article/${id}`),
   create: data => axios.post(`/article`, data),
   update: data => axios.put('/article', data),
-  delete: ids => axios.delete('/article', { data: { ids: ids }}),
-  recover: ids => axios.post('/recover', ids)
+  delete: ids => axios.post('/article/delete', ids), // 假删
+  destroy: ids => axios.delete('/article/destroy', { data: { ids: ids }}), // 物理删除
+  recover: ids => axios.post('/artcle/recover', { ids })
 }
 const music = {
   getRandomAlbum: () => axios.get('/randomAlbum'),

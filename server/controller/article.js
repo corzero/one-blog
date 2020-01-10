@@ -23,7 +23,11 @@ class ArticleController {
       }
     }
   }
-
+  /**
+   * 获取单个文章
+   * @param ctx
+   * @returns {Promise<boolean>}
+   */
   static async getOneById (ctx) {
     const { aid } = ctx.params
     const res = await articleService.getOne(aid)
@@ -36,7 +40,7 @@ class ArticleController {
 
   /**
    * 创建文章
-   * @param ctx username、password、sex、title、
+   * @param ctx
    * @returns {Promise<boolean>}
    */
   static async create (ctx) {
@@ -77,8 +81,8 @@ class ArticleController {
   }
 
   /**
-   * 删除文章
-   * @param ctx id
+   * 文章->回收站
+   * @param ctx ids
    * @returns {Promise<boolean>}
    */
   static async deleteByIds (ctx) {
@@ -92,13 +96,28 @@ class ArticleController {
   }
 
   /**
-   * 获取用户信息
+   * 还原文章
    * @param ctx title,sex,email
    * @returns {Promise<boolean>}
    */
-  static async recover (ctx) {
+  static async recoverByIds (ctx) {
     const { ids } = ctx.request.body
     const res = await articleService.recover(ids)
+    if (!res) {
+      return (ctx.body = statusCode.Success_500('恢复失败'))
+    } else {
+      return (ctx.body = statusCode.Success_200('恢复成功'))
+    }
+  }
+
+  /**
+   * 物理删除文章
+   * @param ctx title,sex,email
+   * @returns {Promise<boolean>}
+   */
+  static async destroyByIds (ctx) {
+    const { ids } = ctx.request.body
+    const res = await articleService.destroy(ids)
     if (!res) {
       return (ctx.body = statusCode.Success_500('恢复失败'))
     } else {
@@ -112,6 +131,7 @@ module.exports = router => {
   router.get('/article/:aid', ArticleController.getOneById)
   router.post('/article', ArticleController.create)
   router.put('/article', ArticleController.update)
-  router.delete('/article', ArticleController.deleteByIds)
-  router.post('/recover', ArticleController.recover)
+  router.delete('/article/destroy', ArticleController.destroyByIds)
+  router.post('/artcle/delete', ArticleController.deleteByIds)
+  router.post('/artcle/recover', ArticleController.recoverByIds)
 }

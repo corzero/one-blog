@@ -44,7 +44,7 @@ class ArticleService {
     if (tag) {
       conditions.tagList = tag
     }
-    const res = await ArticleModel.find(conditions, { __v: 0 })
+    const res = await ArticleModel.find(conditions, { __v: 0, content: 0 })
       .populate('tagList', { name: 1, _id: 1 })
       .populate('author', { username: 1, _id: 1 })
       .populate('category', { name: 1, _id: 1 })
@@ -72,7 +72,7 @@ class ArticleService {
   }
 
   /**
-   * 删除文章
+   * 文章回收站
    * @param article_ids
    * @returns {Promise<boolean>}
    */
@@ -81,6 +81,18 @@ class ArticleService {
       { _id: { $in: ids }},
       { $set: { isDeleted: true }}
     ).catch(e => logger.error(e))
+    return res || null
+  }
+
+  /**
+   * 物理删除
+   * @param article_ids
+   * @returns {Promise<boolean>}
+   */
+  static async destroy (ids) {
+    const res = await ArticleModel.deleteMany({ _id: { $in: ids }}).catch(e =>
+      logger.error(e)
+    )
     return res || null
   }
 

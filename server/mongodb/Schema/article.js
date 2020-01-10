@@ -38,9 +38,9 @@ const ArticleSchema = new Schema(
   },
   { VersionKey: false }
 )
-ArticleSchema.pre('save', function(next) {
+ArticleSchema.pre('save', function (next) {
   if (!this.desc) {
-    this.desc = this.content.slice(0, 50)
+    this.desc = this.content.slice(0, 200)
   }
   if (this.isNew) {
     this.meta.createdAt = this.meta.updatedAt = Date.now()
@@ -49,7 +49,7 @@ ArticleSchema.pre('save', function(next) {
   }
   next()
 })
-ArticleSchema.pre('findOne', function(next) {
+ArticleSchema.pre('findOne', function (next) {
   this.visited++
   next()
 })

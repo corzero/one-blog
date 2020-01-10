@@ -85,6 +85,12 @@ export const constantRoutes = [
         hidden: true
       },
       {
+        path: 'trash',
+        name: 'Trash',
+        component: () => import('@/views/article/trash'),
+        meta: { title: '回收站', icon: 'trash' }
+      },
+      {
         path: 'config',
         name: 'Config',
         component: () => import('@/views/article/config'),

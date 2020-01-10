@@ -4,6 +4,9 @@
       <el-form-item label="主题">
         <el-input v-model="article.title" size="small" placeholder="主题...." />
       </el-form-item>
+      <el-form-item label="简介">
+        <el-input v-model="article.desc" size="small" placeholder="简介...." />
+      </el-form-item>
       <el-form-item label="分类">
         <el-select v-model="article.category" size="small" placeholder="分类" @change="getTagList">
           <el-option label="全部" value="" />
@@ -15,17 +18,15 @@
           <el-option label="全部" value="" />
           <el-option v-for="e in tagList" :key="e._id" :label="e.name" :value="e._id" />
         </el-select>
-        <div>
-          <el-tag v-for="tag in selectTag" :key="tag._id" closable style="margin-left:5px" @close="handleClose(tag._id)">
-            {{ tag.name }}
-          </el-tag>
-        </div>
+        <el-tag v-for="tag in selectTag" :key="tag._id" closable style="margin-left:5px" @close="handleClose(tag._id)">
+          {{ tag.name }}
+        </el-tag>
       </el-form-item>
     </el-form>
-    <mavon-editor ref="md" v-model="article.content" :ishljs="true" :editable="!isView" code-style="code_style" @imgAdd="$imgAdd" @imgDel="$imgDel" />
+    <mavon-editor ref="md" v-model="article.content" :ishljs="true" :editable="!isView" code-style="code_style" @imgAdd="$imgAdd" @imgDel="$imgDel" style="position: initial"/>
     <div class="view-button">
       <el-tooltip content="取消" placement="top">
-        <el-button type="danger" icon="el-icon-close" size="small" circle @click="cancelArticle" />
+        <el-button type="danger" icon="el-icon-close" size="small" circle @click="$router.back(-1)" />
       </el-tooltip>
       <el-tooltip content="保存" placement="top">
         <el-button type="success" icon="el-icon-check" size="small" circle @click="saveArticle" />
@@ -62,6 +63,7 @@ export default {
         title: '',
         category: '',
         tagList: [],
+        desc: '',
         content: ''
       }
     }
@@ -104,6 +106,9 @@ export default {
       }
     },
     async saveArticle () {
+      if (!this.article.desc) {
+        this.article.desc = this.article.content.slice(0, 100)
+      }
       if (this.type === 'add') {
         const res = await article.create(this.article)
         if (res.code === 200) {
@@ -117,9 +122,6 @@ export default {
           this.$router.back(-1)
         }
       }
-    },
-    cancelArticle () {
-      this.$emit('changeView', { type: null })
     },
     handleClose (tid) {
       this.article.tagList.splice(this.article.tagList.indexOf(tid), 1)

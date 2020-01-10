@@ -34,9 +34,9 @@
         <template slot-scope="scope">{{ scope.row.title }}</template>
       </el-table-column>
       <el-table-column prop="category.name" label="分类" width="100" show-overflow-tooltip />
-      <el-table-column label="描述" width="400" show-overflow-tooltip>
+      <el-table-column label="描述" width="500" show-overflow-tooltip>
         <template slot-scope="scope">
-          <span>{{ scope.row.content.slice(0,100) }}... </span>
+          <span>{{ scope.row.desc }}... </span>
         </template>
       </el-table-column>
       <el-table-column prop="author.username" label="作者" width="100" show-overflow-tooltip />
@@ -127,7 +127,7 @@ export default {
   }
 }
 </script>
-<style lang="scss" scoped>
+<style lang="scss">
 .pagination {
   position: absolute;
   right: 0;
